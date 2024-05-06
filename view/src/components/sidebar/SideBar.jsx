@@ -29,7 +29,6 @@ import sessionData from "../../helper/session";
 
 export function SidebarWithSearch() {
   const [open, setOpen] = React.useState(0);
-  const [openAlert, setOpenAlert] = React.useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [jobFilter, setJobFilter] = useState("");
@@ -62,7 +61,7 @@ export function SidebarWithSearch() {
   const shouldShowAddWorkButton = location.pathname.startsWith("/professional");
   const shouldShowMyWorks = sessionData.role === "professional";
 
-  const showInput = location.pathname === "works";
+  const showInput = location.pathname === "/works";
  
   const handleMyWorks =async(e)=>{
     e.preventDefault();
