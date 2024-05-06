@@ -1,0 +1,11 @@
+.content{
+    display: flex;
+    margin-right:20px; 
+     };
+.card{
+    display: flex;
+    justify-content: center;
+}
+.sidebar{
+    justify-self: flex-start;
+}

@@ -1,0 +1,9 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    margin-inline: 10px;
+    
+};
+.card{
+    margin-inline: 10px;
+}

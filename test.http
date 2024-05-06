@@ -1,0 +1,80 @@
+//---Users---\\
+GET http://localhost:4040/user
+
+####
+POST http://localhost:4040/createUser
+Content-Type: application/json
+
+{
+    "firstName":"Andrea",
+    "lastName":"Frabotta",
+    "email":"io.mestesso@hotmail.com",
+    "password":"gojoforever",
+    "age":35
+}
+####
+POST http://localhost:4040/professional/66369148316cb19c6b803a43/myWorks
+Content-Type: application/json
+
+{
+    "author":"Andrea",
+    "title":"Frabotta",
+    "description":"lkjfldsjòlds",
+    "img":"https://static.vecteezy.com/system/resources/previews/000/649/115/original/user-icon-symbol-sign-vector.jpg",
+ 
+}
+####
+
+GET http://localhost:4040/user/66351783e2bb5d7c2eea60dd
+
+####
+PATCH http://localhost:4040/user/update/66202feecee0ac9bc580adb3
+Content-Type: application/json
+
+{
+    "firstName": "Andrew"
+}
+
+####
+DELETE http://localhost:4040/users/delete/
+
+
+//--Professional--\\
+
+####
+GET http://localhost:4040/professional
+
+####
+
+POST http://localhost:4040/createProfessional
+Content-Type: application/json
+
+{
+    "firstName": "Andrea",
+    "lastName" : "Frabotta",
+    "email": "io.mestesso@hotmail.com",
+    "password":"gojoforever",
+    "age":35,
+    "job":"web developer"
+}
+
+####
+
+GET http://localhost:4040/professional/6620309ef1edc63d989633fc
+
+####
+POST http://localhost:4040/professional/6620309ef1edc63d989633fc
+
+####
+PATCH http://localhost:4040/professional/update/6620309ef1edc63d989633fc
+Content-Type: application/json
+
+{
+    "firstName":"Andrew"
+}
+
+####
+DELETE http://localhost:4040/professional/delete/6620309ef1edc63d989633fc
+
+####
+GET http://localhost:4040/works
