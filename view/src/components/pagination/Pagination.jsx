@@ -13,8 +13,6 @@ export function DefaultPagination({ currentPage, totalPage, onPageChange }) {
     if (currentPage === totalPage) return;
     onPageChange(currentPage + 1);
   };
-  console.log(currentPage);
-  console.log(totalPage);
 
   return (
     <div className="flex items-center gap-4">
