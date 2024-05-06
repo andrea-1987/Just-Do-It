@@ -62,7 +62,7 @@ export function SidebarWithSearch() {
   const shouldShowAddWorkButton = location.pathname.startsWith("/professional");
   const shouldShowMyWorks = sessionData.role === "professional";
 
-  const showInput = location.pathname === "/professional" && "/user";
+  const showInput = location.pathname === "works";
  
   const handleMyWorks =async(e)=>{
     e.preventDefault();

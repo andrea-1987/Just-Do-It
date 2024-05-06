@@ -2,20 +2,17 @@ import React from "react";
 
 import { Button } from "@material-tailwind/react";
 
+
 export const DetailCard = ({
   author,
   title,
   description,
   img,
   location,
-  pubDate,
-  addToPreferWorks
-  
+  pubDate, 
 }) => {
-  const handleCardClick = () => {
-    
-    addToPreferWorks();
-  };
+  
+
   return (
     <div class="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
       <div class="relative  mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
@@ -74,7 +71,7 @@ export const DetailCard = ({
       </div>
       <div class="p-6 pt-3">
         <a href="#" className="inline-block">
-          <Button onClick={handleCardClick} variant="text" className="flex items-center gap-2">
+          {/* <Button onClick={handleCardClick} variant="text" className="flex items-center gap-2">
             Save
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +87,7 @@ export const DetailCard = ({
                 d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
               />
             </svg>
-          </Button>
+          </Button> */}
         </a>
       </div>
     </div>

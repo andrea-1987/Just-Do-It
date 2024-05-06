@@ -4,8 +4,7 @@ import { MainLayout } from "../layout/MainLayout"
 import sessionData from "../helper/session"
 
 export const HomePage=()=>{
-    console.log(sessionData)
-     return(
+       return(
         <MainLayout>
             <MainContent/>
         </MainLayout>
