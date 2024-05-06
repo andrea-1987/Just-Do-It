@@ -3,7 +3,7 @@ import { MainLayout } from "../layout/MainLayout";
 import { SidebarWithSearch } from "../components/sidebar/SideBar";
 import { PersonalContent } from "../components/personal/PersonalContent";
 
-const MyWorks = () => {
+const PreferWorks = () => {
   return (
     <MainLayout class="justify-center mx-2">
       <div class="flex mx-2">
@@ -14,4 +14,4 @@ const MyWorks = () => {
   );
 };
 
-export default MyWorks;
+export default PreferWorks;

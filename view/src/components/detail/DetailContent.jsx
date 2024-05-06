@@ -28,14 +28,13 @@ export const DetailContent = () => {
       const data = await response.json();
       if (data) {
         setWork(data);
-      } else {
+            } else {
         throw new Error("works not found");
       }
     } catch (error) {
       console.error("Error to find work", error);
     }
   };
-
   useEffect(() => {
     getDetailWork();
   }, [_id]);
