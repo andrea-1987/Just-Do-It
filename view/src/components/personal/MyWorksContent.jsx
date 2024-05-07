@@ -18,7 +18,7 @@ export const MyWorksContent = () => {
   const [page, setPage] = useState(1);
   const [works, setWorks] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
- 
+
   const getMyWorks = async () => {
     try {
       const response = await fetch(
@@ -46,7 +46,7 @@ export const MyWorksContent = () => {
 
   const handleRemove = async (workId) => {
     try {
-      const response = await fetch(
+          const response1 = await fetch(
         `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/myWorks/${workId}`,
         {
           method: "DELETE",
@@ -56,13 +56,27 @@ export const MyWorksContent = () => {
           },
         }
       );
-
-      if (!response.ok) {
+  
+      if (!response1.ok) {
         throw new Error(`Failed to delete work with ID ${workId}`);
       }
-
-      alert("Work successfully removed!");
-      window.location.reload();
+        const response2 = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/works/${workId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionData.token}`,
+          },
+        }
+      );
+  
+      if (!response2.ok) {
+        throw new Error(`Failed to delete work with ID ${workId}`);
+      }
+  
+      setWorks((prevWorks) => prevWorks.filter((work) => work._id !== workId));
+        alert("Work successfully removed!");
     } catch (error) {
       console.error("Error deleting work:", error);
     }
