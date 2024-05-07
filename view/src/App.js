@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route element={<ProtectedRoutes />}>
-          <Route path="/works" element={<LoggedPage />} />
+          <Route path="/allWorks" element={<LoggedPage />} />
                    <Route path="/user/:_id/preferWorks" element={<PreferWorks/>} />
             <Route path="/professional/:_id/preferWorks" element={<PreferWorks/>} />
             <Route path="/professional/:_id/myWorks" element={<MyWorks/>} />

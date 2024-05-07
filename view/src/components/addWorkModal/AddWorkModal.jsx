@@ -52,26 +52,7 @@ export const AddWorkModal = () => {
 
     try {
       const uploadedFile = await uploadFile();
-      const bodyToSend = {
-        ...formData,
-        img: uploadedFile.source,
-      };
-
-      const generalWorkResponse = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/createWork`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bodyToSend),
-        }
-      );
-
-      if (!generalWorkResponse.ok) {
-        throw new Error("Failed to create work in the general area");
-      }
-
+      
       const bodyToSendProfessional = {
         ...formData,
         img: uploadedFile.source,

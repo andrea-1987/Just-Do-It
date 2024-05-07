@@ -21,7 +21,7 @@ export const WorksContent = () => {
   const getAllWorks = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/works?page=${page}`,
+        `${process.env.REACT_APP_SERVER_BASE_URL}/allWorks?page=${page}`,
         {
           method: "GET",
           headers: {
@@ -31,8 +31,9 @@ export const WorksContent = () => {
         }
       );
       const data = await response.json();
-      setWorks(data.payload);
+      setWorks(data.payload.myWorks);
       setTotalPages(data.totalPages);
+      console.log(works)
     } catch (error) {
       console.error("Error fetching works:", error);
     }
@@ -55,7 +56,7 @@ export const WorksContent = () => {
       )}
       {isAuthenticated &&
         !isLoading &&
-        !error &&
+        !error && works &&
         works.map((work) => (
           <UserCards
             key={work._id}

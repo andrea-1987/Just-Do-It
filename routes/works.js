@@ -11,7 +11,7 @@ router.post("/createWork", worksController.addWork);
 
 router.patch("/works/update/:id", worksController.updateWork);
 
-router.delete("/works/delete/:id", worksController.deleteWork);
+router.delete("/works/delete/:workId", worksController.deleteWork);
 
 router.post("/works/cloudUploadImg",cloudUpload,worksController.cloudUploadWorks);
 

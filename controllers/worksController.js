@@ -116,21 +116,26 @@ exports.updateWork = async (req, res) => {
 };
 
 exports.deleteWork = async (req, res) => {
-  const { id } = req.params;
+  const { workId } = req.params; 
 
   try {
-    const work = await WorksModel.findByIdAndDelete(id);
+    const work = await WorksModel.findByIdAndDelete(workId);
     if (!work) {
-      res.status(400).send({
+      return res.status(400).send({
         statusCode: 400,
-        message: `work with id ${id} not exist`,
+        message: `Work with id ${workId} does not exist`,
       });
     }
-    res.status(200).send(`Work with id ${id} successfully removed`);
+    return res.status(200).send({
+      statusCode: 200,
+      message: `Work with id ${workId} successfully removed`,
+    });
   } catch (error) {
-    res.status(500).send({
+    console.error("Error deleting work:", error);
+    return res.status(500).send({
       statusCode: 500,
       message: "Internal server error",
     });
   }
 };
+

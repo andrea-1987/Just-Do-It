@@ -60,26 +60,12 @@ export const MyWorksContent = () => {
       if (!response1.ok) {
         throw new Error(`Failed to delete work with ID ${workId}`);
       }
-        const response2 = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/works/${workId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionData.token}`,
-          },
-        }
-      );
-  
-      if (!response2.ok) {
-        throw new Error(`Failed to delete work with ID ${workId}`);
-      }
-  
-      setWorks((prevWorks) => prevWorks.filter((work) => work._id !== workId));
+     
         alert("Work successfully removed!");
     } catch (error) {
       console.error("Error deleting work:", error);
     }
+    window.location.reload();
   };
 
   const onPageChange = (newPage) => {

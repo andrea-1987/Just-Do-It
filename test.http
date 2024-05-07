@@ -77,4 +77,4 @@ Content-Type: application/json
 DELETE http://localhost:4040/professional/delete/6620309ef1edc63d989633fc
 
 ####
-GET http://localhost:4040/works
+DELETE  http://localhost:4040/works/delete/663a355d16d6c45bc6541f06

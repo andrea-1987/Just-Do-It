@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { LoginForm } from "../loginForm/LoginForm";
 import { jwtDecode } from "jwt-decode";
+import styles from "./navigation.module.css"
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = React.useState(false);
@@ -41,7 +42,12 @@ export function StickyNavbar() {
    
     );}else {<h2> "Welcome"</h2>}
   }
-  
+  const hadleToLoggedPage=(e)=>{
+    e.preventDefault();
+    if(session !==""){
+      navigate("/allWorks")
+    }
+  }
   return (
     <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] overflow-scroll">
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 ">
@@ -57,8 +63,9 @@ export function StickyNavbar() {
           <div className="flex items-center gap-4">
             <div>
               <div>
-                <h2 >
+                <h2 onClick={hadleToLoggedPage} className={`${styles.welcome}`}>
                   {Welcome()}
+                  
                 </h2>
               </div>
             </div>

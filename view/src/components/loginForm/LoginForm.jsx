@@ -25,7 +25,7 @@ export function LoginForm() {
   
           const decodedToken = jwtDecode(data.token);
   
-          navigate("/works");
+          navigate("/allWorks");
         } else {
           alert("Unknown User");
         }

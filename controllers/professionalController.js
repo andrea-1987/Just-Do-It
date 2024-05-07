@@ -16,6 +16,32 @@ exports.getProfessional = async (req, res) => {
   }
 };
 
+exports.getAllProfessionalMyWorks = async (req, res) => {
+  const { page = 1, pageSize = 3 } = req.query;
+  try {
+    const professionals = await ProfessionalModel.find({}, 'myWorks')
+      .limit(parseInt(pageSize))
+      .skip((parseInt(page) - 1) * parseInt(pageSize))
+      .sort({ pubDate: -1 });
+
+    const totalWorks = await ProfessionalModel.countDocuments();
+
+    res.status(200).send({
+      currentPage: parseInt(page),
+      pageSize: parseInt(pageSize),
+      totalPages: Math.ceil(totalWorks / parseInt(pageSize)),
+      statusCode: 200,
+      payload: professionals
+    });
+  } catch (error) {
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error"
+    });
+  }
+};
+
+
 exports.getMyWorks = async (req, res) => {
   const { id } = req.params;
   const { page = 1, pageSize = 3 } = req.query;
