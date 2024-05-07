@@ -30,9 +30,9 @@ exports.getMyWorks = async (req, res) => {
       });
     }
 
-    const myWorks = await ProfessionalModel.find(
-      { _id: id },
-      { myWorks: { $slice: [(page - 1) * pageSize, pageSize] } }
+    const myWorks = professional.myWorks.slice(
+      (page - 1) * pageSize,
+      page * pageSize
     );
 
     const totalMyWorks = professional.myWorks.length;
@@ -47,7 +47,7 @@ exports.getMyWorks = async (req, res) => {
       pageSize,
       totalPages: Math.ceil(totalMyWorks / pageSize),
       statusCode: 200,
-      message: `User with id ${id} correctly found`,
+      message: `My works with id ${id} correctly found`,
       payload,
     });
   } catch (error) {
@@ -58,6 +58,7 @@ exports.getMyWorks = async (req, res) => {
     });
   }
 };
+
 
 exports.getPreferWorks = async (req, res) => {
   const { id } = req.params;
@@ -90,7 +91,7 @@ exports.getPreferWorks = async (req, res) => {
       pageSize,
       totalPages: Math.ceil(totalPreferWorks / pageSize),
       statusCode: 200,
-      message: `Professional with id ${id} correctly found`,
+      message: `Preferit works with id ${id} correctly found`,
       payload,
     });
   } catch (error) {
