@@ -43,6 +43,30 @@ export const PreferWorksContent = () => {
     getPreferWorks();
   }, [page]);
 
+  const handleRemove = async (workId) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks/${workId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionData.token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete work with ID ${workId}`);
+      }
+
+      alert("Work successfully removed!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting work:", error);
+    }
+  };
+
   const onPageChange = (newPage) => {
     setPage(newPage);
   };
@@ -56,7 +80,7 @@ export const PreferWorksContent = () => {
       {isAuthenticated &&
         !isLoading &&
         !error &&
-        works.length>0 &&
+        works.length > 0 &&
         works.map((work) => (
           <div key={work._id}>
             <PrivateCards
@@ -67,6 +91,7 @@ export const PreferWorksContent = () => {
               location={work.location}
               pubDate={work.pubDate}
               _id={work._id}
+              handleRemove={() => handleRemove(work._id)}
             />
           </div>
         ))}

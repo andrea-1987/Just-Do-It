@@ -18,11 +18,11 @@ export const MyWorksContent = () => {
   const [page, setPage] = useState(1);
   const [works, setWorks] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-
+ 
   const getMyWorks = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks?page=${page}`,
+        `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/myWorks?page=${page}`,
         {
           method: "GET",
           headers: {
@@ -34,6 +34,7 @@ export const MyWorksContent = () => {
       const data = await response.json();
       setWorks(data.payload.myWorks);
       setTotalPages(data.totalPages);
+      console.log(works)
     } catch (error) {
       console.error("Error fetching works:", error);
     }
@@ -42,6 +43,30 @@ export const MyWorksContent = () => {
   useEffect(() => {
     getMyWorks();
   }, [page]);
+
+  const handleRemove = async (workId) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/myWorks/${workId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionData.token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete work with ID ${workId}`);
+      }
+
+      alert("Work successfully removed!");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting work:", error);
+    }
+  };
 
   const onPageChange = (newPage) => {
     setPage(newPage);
@@ -56,7 +81,7 @@ export const MyWorksContent = () => {
       {isAuthenticated &&
         !isLoading &&
         !error &&
-        works.length>0 &&
+        works.length > 0 &&
         works.map((work) => (
           <div key={work._id}>
             <PrivateCards
@@ -67,6 +92,7 @@ export const MyWorksContent = () => {
               location={work.location}
               pubDate={work.pubDate}
               _id={work._id}
+              handleRemove={() => handleRemove(work._id)}
             />
           </div>
         ))}

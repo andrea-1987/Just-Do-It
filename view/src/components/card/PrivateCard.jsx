@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import sessionData from "../../helper/session";
 import { useLocation } from "react-router-dom";
 
 export function PrivateCards({
@@ -17,38 +16,11 @@ export function PrivateCards({
   img,
   location,
   _id,
+  handleRemove
 }) {
   const local = useLocation();
 
-  const handleRemove = async () => {
-    try {
-      let deleteEndpoint = "";
-      if (local.pathname === "/myWorks") {
-        deleteEndpoint = `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/myWorks/${_id}`;
-      } else if (local.pathname === "/preferWorks") {
-        deleteEndpoint = `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks/${_id}`;
-      } else {
-        throw new Error("Unsupported route");
-      }
 
-      const response = await fetch(deleteEndpoint, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionData.token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to delete work with ID ${_id}`);
-      }
-
-      alert("Work successfully removed!");
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting work:", error);
-    }
-  };
   const shouldShowModifyButton = local.pathname === "/myWorks";
 
   return (
