@@ -67,9 +67,9 @@ This section has moved [here](https://facebook.github.io/create-react-app/docs/a
 
 This section has moved [here](https://facebook.github.io/create-react-app/docs/deployment).
 
-🌐 **Check out the deployed app:** [My Awesome React App](https://main--bucolic-custard-5eed63.netlify.app/works)
+🌐 **Check out the deployed app:** [My Awesome React App](https://main--bucolic-custard-5eed63.netlify.app)
 
-You can access the deployed version of the app [here](https://main--bucolic-custard-5eed63.netlify.app/works).
+You can access the deployed version of the app [here](https://main--bucolic-custard-5eed63.netlify.app).
 
 ### `npm run build` fails to minify
 
