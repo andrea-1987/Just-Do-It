@@ -209,4 +209,43 @@ exports.deleteUser=async(req,res)=>{
             message:"Internal server error"
         })
     };
-}
+};
+
+exports.deleteWorkFromPreferWorks = async (req, res) => {
+  const { userId, workId } = req.params;
+
+  try {
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `user with ID ${userId} not found`,
+      });
+    }
+
+    const workIndex = user.preferWorks.findIndex(
+      (work) => work._id.toString() === workId
+    );
+
+    if (workIndex === -1) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Work with ID ${workId} not found in preferWorks of user with ID ${userId}`,
+      });
+    }
+
+    user.preferWorks.splice(workIndex, 1);
+    await user.save();
+
+    res.status(200).send({
+      statusCode: 200,
+      message: `Work with ID ${workId} deleted from preferWorks of user with ID ${userId}`,
+    });
+  } catch (error) {
+    console.error("Error deleting work from preferWorks:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+  }
+};

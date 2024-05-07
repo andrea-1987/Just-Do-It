@@ -22,4 +22,9 @@ router.patch("/professional/update/:id",professionalController.updateProfessiona
 
 router.delete("/professional/delete/:id",professionalController.deleteProfessional);
 
+router.delete("/professional/:professionalId/preferWorks/:workId", professionalController.deleteWorkFromPreferWorks);
+
+router.delete("/professional/:professionalId/myWorks/:workId", professionalController.deleteWorkFromMyWorks);
+
+
 module.exports=router

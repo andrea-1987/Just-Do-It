@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./personalContent.module.css";
-import { UserCards } from "../card/UserCard";
 import { CustomSpinner } from "../loading/Loader";
 import { ErrorAlert } from "../error/Error";
 import { DefaultPagination } from "../pagination/Pagination";
@@ -8,8 +7,10 @@ import useSession from "../../hooks/useSession";
 import { worksError, isWorkLoading } from "../../redux/WorkCardSlice";
 import { useSelector } from "react-redux";
 import sessionData from "../../helper/session";
+import { PrivateCards } from "../card/PrivateCard";
+import { SidebarWithSearch } from "../sidebar/SideBar";
 
-export const PersonalContent = () => {
+export const MyWorksContent = () => {
   const isAuthenticated = useSession();
   const isLoading = useSelector(isWorkLoading);
   const error = useSelector(worksError);
@@ -18,7 +19,7 @@ export const PersonalContent = () => {
   const [works, setWorks] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const privatePage = async () => {
+  const getMyWorks = async () => {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks?page=${page}`,
@@ -26,27 +27,7 @@ export const PersonalContent = () => {
           method: "GET",
           headers: {
             "Content-type": "application/json",
-            authorization: sessionData,
-          },
-        }
-      );
-      const data = await response.json();
-
-      setWorks(data.payload.preferWorks);
-      setTotalPages(data.totalPages);
-    } catch (error) {
-      alert("Error fetching works:", error);
-    }
-  };
-  const getMyWorks = async (e) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/myWorks?page=${page}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            authorization: sessionData,
+            Authorization: `Bearer ${sessionData}`,
           },
         }
       );
@@ -54,18 +35,20 @@ export const PersonalContent = () => {
       setWorks(data.payload.myWorks);
       setTotalPages(data.totalPages);
     } catch (error) {
-      alert("Error fetching works:", error);
+      console.error("Error fetching works:", error);
     }
   };
+
   useEffect(() => {
-    privatePage();
-    window.scrollTo(0, 0);
+    getMyWorks();
   }, [page]);
+
   const onPageChange = (newPage) => {
     setPage(newPage);
   };
   return (
     <div className={`${styles.content}`}>
+      <SidebarWithSearch />
       {isLoading && <CustomSpinner />}
       {!isLoading && error && (
         <ErrorAlert message="Ops! Qualcosa è andato storto" />
@@ -73,10 +56,10 @@ export const PersonalContent = () => {
       {isAuthenticated &&
         !isLoading &&
         !error &&
-        works &&
+        works.length>0 &&
         works.map((work) => (
           <div key={work._id}>
-            <UserCards
+            <PrivateCards
               author={work.author}
               description={work.description}
               title={work.title}

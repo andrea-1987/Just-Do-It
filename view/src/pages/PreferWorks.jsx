@@ -1,14 +1,13 @@
 import React from "react";
 import { MainLayout } from "../layout/MainLayout";
-import { SidebarWithSearch } from "../components/sidebar/SideBar";
-import { PersonalContent } from "../components/personal/PersonalContent";
+import { PreferWorksContent } from "../components/personal/PreferWorksContent";
+
 
 const PreferWorks = () => {
   return (
     <MainLayout class="justify-center mx-2">
       <div class="flex mx-2">
-    <SidebarWithSearch/>
-    <PersonalContent />
+  <PreferWorksContent/>
   </div>
   </MainLayout>
   );

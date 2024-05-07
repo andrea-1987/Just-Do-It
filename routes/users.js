@@ -18,4 +18,7 @@ router.patch("/user/update/:id",usersController.updateUser);
 
 router.delete("/user/delete/:id",usersController.deleteUser);
 
+router.delete("/user/:userId/preferWorks/:workId", usersController.deleteWorkFromPreferWorks);
+
+
 module.exports=router

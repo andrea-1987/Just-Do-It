@@ -311,3 +311,81 @@ exports.deleteProfessional = async (req, res) => {
     });
   }
 };
+
+exports.deleteWorkFromPreferWorks = async (req, res) => {
+  const { professionalId, workId } = req.params;
+
+  try {
+    const professional = await ProfessionalModel.findById(professionalId);
+    if (!professional) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Professional with ID ${professionalId} not found`,
+      });
+    }
+
+    const workIndex = professional.preferWorks.findIndex(
+      (work) => work._id.toString() === workId
+    );
+
+    if (workIndex === -1) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Work with ID ${workId} not found in preferWorks of professional with ID ${professionalId}`,
+      });
+    }
+
+    professional.preferWorks.splice(workIndex, 1);
+    await professional.save();
+
+    res.status(200).send({
+      statusCode: 200,
+      message: `Work with ID ${workId} deleted from preferWorks of professional with ID ${professionalId}`,
+    });
+  } catch (error) {
+    console.error("Error deleting work from preferWorks:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.deleteWorkFromMyWorks = async (req, res) => {
+  const { professionalId, workId } = req.params;
+
+  try {
+    const professional = await ProfessionalModel.findById(professionalId);
+    if (!professional) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Professional with ID ${professionalId} not found`,
+      });
+    }
+
+    const workIndex = professional.myWorks.findIndex(
+      (work) => work._id.toString() === workId
+    );
+
+    if (workIndex === -1) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Work with ID ${workId} not found in preferWorks of professional with ID ${professionalId}`,
+      });
+    }
+
+    professional.myWorks.splice(workIndex, 1);
+    await professional.save();
+
+    res.status(200).send({
+      statusCode: 200,
+      message: `Work with ID ${workId} deleted from preferWorks of professional with ID ${professionalId}`,
+    });
+  } catch (error) {
+    console.error("Error deleting work from preferWorks:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+  }
+};

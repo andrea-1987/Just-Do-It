@@ -35,7 +35,6 @@ export function SidebarWithSearch() {
   const [locationFilter, setLocationFilter] = useState("");
   const [filtered, setFiltered] = useState({ job: "", location: "" });
 
-  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -61,14 +60,14 @@ export function SidebarWithSearch() {
   const shouldShowAddWorkButton = location.pathname.startsWith("/professional");
   const shouldShowMyWorks = sessionData.role === "professional";
 
-  const showInput = location.pathname === "/works";
- 
-  const handleMyWorks =async(e)=>{
+  const showInput = location.pathname === "works";
+
+  const handleMyWorks = async (e) => {
     e.preventDefault();
     try {
       const id = sessionData._id;
-      if (id ) {
-        navigate(`/professional/${id}/myworks`);
+      if (id) {
+        navigate(`/${sessionData.role}/${id}/myWorks`);
       } else {
         alert("No works to show");
       }
@@ -77,7 +76,7 @@ export function SidebarWithSearch() {
     }
   };
 
-  const personalPage = async (e) => {
+  const handlePreferWorks = async (e) => {
     e.preventDefault();
     try {
       const role = sessionData.role;
@@ -91,21 +90,21 @@ export function SidebarWithSearch() {
     } catch (error) {
       throw new Error("Failed to parse token");
     }
-  };
+   };
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
-const handlerLogOut=(e)=>{
-  e.preventDefault();
-  localStorage.clear();
-  navigate("/");
-}
+  const handlerLogOut = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    navigate("/");
+  };
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
   return (
-<div className="flex-cols">
-    <IconButton variant="text" size="lg" onClick={openDrawer}>
+    <div className="flex-cols">
+      <IconButton variant="text" size="lg" onClick={openDrawer}>
         {isDrawerOpen ? (
           <XMarkIcon className="h-8 w-8 stroke-2" />
         ) : (
@@ -162,7 +161,7 @@ const handlerLogOut=(e)=>{
             </ListItemPrefix>
             Settings
           </ListItem>
-          <ListItem className="my-2" onClick={personalPage}>
+          <ListItem className="my-2" onClick={handlePreferWorks}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>

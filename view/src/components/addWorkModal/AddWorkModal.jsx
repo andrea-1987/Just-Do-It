@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import sessionData from "../../helper/session";
+import { useNavigate } from "react-router-dom";
 
 export const AddWorkModal = () => {
   const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({});
+
+  const navigate=useNavigate()
 
   const onChangeHandleFile = (e) => {
     setFile(e.target.files[0]);
@@ -32,12 +35,14 @@ export const AddWorkModal = () => {
       );
       if (response.ok) {
         return await response.json();
+         
       } else {
         throw new Error("Something went wrong!");
       }
     } catch (e) {
       alert("Upload file failed: " + e.message);
     }
+    window.location.reload()
   };
 
   const submitWork = async (e) => {
