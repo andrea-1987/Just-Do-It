@@ -70,7 +70,7 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="/aboutUs" className="flex items-center">
+        <a href="/allWorks" className="flex items-center">
           <Welcome  onClick={handleToLoggedPage}/>
         </a>
       </Typography>
@@ -152,7 +152,7 @@ export function StickyNavbar() {
             <Button onClick={handleLogOut} fullWidth variant="text" size="sm" className="">
               <span>Log out</span>
             </Button>
-            <Button onClick={handleOpen} fullWidth variant="gradient" size="sm" className="">
+            <Button onClick={handleOpenLogin} fullWidth variant="gradient" size="sm" className="">
               <span>Log in</span>
             </Button>
             <Dialog
