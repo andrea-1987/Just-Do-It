@@ -17,7 +17,7 @@ function App() {
                    <Route path="/user/:_id/preferWorks" element={<PreferWorks/>} />
             <Route path="/professional/:_id/preferWorks" element={<PreferWorks/>} />
             <Route path="/professional/:_id/myWorks" element={<MyWorks/>} />
-          <Route path="/works/:_id" element={<DetailPage />} />
+            <Route path="/allWorks/:workId" element={<DetailPage />} />
         </Route>
       </Routes>
     </Router>

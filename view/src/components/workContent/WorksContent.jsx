@@ -8,6 +8,7 @@ import styles from "./workContent.module.css";
 import { DefaultPagination } from "../pagination/Pagination";
 import useSession from "../../hooks/useSession";
 import sessionData from "../../helper/session";
+import { useParams } from "react-router-dom";
 
 export const WorksContent = () => {
   const isAuthenticated = useSession();
@@ -17,6 +18,7 @@ export const WorksContent = () => {
   const [page, setPage] = useState(1);
   const [works, setWorks] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const {professionalId,workId}=useParams();
 
   const getAllWorks = async () => {
     try {
@@ -31,7 +33,7 @@ export const WorksContent = () => {
         }
       );
       const data = await response.json();
-      setWorks(data.payload.myWorks);
+      setWorks(data.payload);
       setTotalPages(data.totalPages);
       console.log(works)
     } catch (error) {
@@ -56,7 +58,8 @@ export const WorksContent = () => {
       )}
       {isAuthenticated &&
         !isLoading &&
-        !error && works &&
+        !error &&
+        works &&
         works.map((work) => (
           <UserCards
             key={work._id}
@@ -68,6 +71,8 @@ export const WorksContent = () => {
             location={work.location}
             pubDate={work.pubDate}
             _id={work._id}
+            professionalId={professionalId}
+            workId={workId}
           />
         ))}
       <DefaultPagination

@@ -26,17 +26,59 @@ exports.getAllProfessionalMyWorks = async (req, res) => {
 
     const totalWorks = await ProfessionalModel.countDocuments();
 
+    let myWorks = [];
+    professionals.forEach(professional => {
+      if (professional.myWorks && Array.isArray(professional.myWorks)) {
+        myWorks = myWorks.concat(professional.myWorks);
+      }
+    });
+
     res.status(200).send({
       currentPage: parseInt(page),
       pageSize: parseInt(pageSize),
       totalPages: Math.ceil(totalWorks / parseInt(pageSize)),
       statusCode: 200,
-      payload: professionals
+      payload: myWorks
     });
   } catch (error) {
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error"
+    });
+  }
+};
+
+
+exports.getSingleWork = async (req, res) => {
+  const { workId } = req.params;
+  try {
+    const professionals = await ProfessionalModel.find({}, 'myWorks');
+    let foundWork = null;
+    professionals.forEach((professional) => {
+      const work = professional.myWorks.find((work) => work._id.toString() === workId);
+      if (work) {
+        foundWork = work;
+        return;
+      }
+    });
+
+    if (!foundWork) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Work with id ${workId} not found`,
+      });
+    }
+
+    res.status(200).send({
+      statusCode: 200,
+      message: `Work with id ${workId} correctly found`,
+      payload: foundWork,
+    });
+  } catch (error) {
+    console.error("Error fetching work:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error",
     });
   }
 };

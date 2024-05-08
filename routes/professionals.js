@@ -12,6 +12,8 @@ router.get("/professional/:id/preferWorks", professionalController.getPreferWork
 
 router.get("/professional/:id/myWorks",professionalController.getMyWorks);
 
+router.get("/allWorks/:workId", professionalController.getSingleWork);
+
 router.get("/allWorks", professionalController.getAllProfessionalMyWorks);
 
 router.post("/createProfessional",validateProfessional,professionalController.addProfessional);

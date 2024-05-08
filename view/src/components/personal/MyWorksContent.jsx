@@ -34,8 +34,7 @@ export const MyWorksContent = () => {
       const data = await response.json();
       setWorks(data.payload.myWorks);
       setTotalPages(data.totalPages);
-      console.log(works)
-    } catch (error) {
+      } catch (error) {
       console.error("Error fetching works:", error);
     }
   };
