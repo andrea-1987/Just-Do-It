@@ -61,10 +61,7 @@ export const DetailContent = () => {
       if (response.ok) {
         alert("Work successfully saved");
       } else {
-        console.error(
-          "Error to save:",
-          response.statusText
-        );
+        console.error("Error to save:", response.statusText);
       }
     } catch (error) {
       console.error("Error to save:", error);
@@ -72,13 +69,13 @@ export const DetailContent = () => {
   };
 
   return (
-    <div className={`flex ${styles.content}`}>
-      <SidebarWithSearch />
+    <div class="flex-cols my-5">
       {isLoading && <CustomSpinner />}
       {!isLoading && error && (
         <ErrorAlert message="Ops! Qualcosa è andato storto" />
       )}
       {!isLoading && !error && work && (
+        <div class="justify-center">
         <DetailCard
           className={`${styles.card}`}
           author={work.author}
@@ -90,6 +87,7 @@ export const DetailContent = () => {
           _id={work.workId}
           addToPreferWorks={addToPreferWorks}
         />
+        </div>
       )}
     </div>
   );

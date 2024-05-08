@@ -17,45 +17,48 @@ exports.getProfessional = async (req, res) => {
 };
 
 exports.getAllProfessionalMyWorks = async (req, res) => {
-  const { page = 1, pageSize = 3 } = req.query;
+  const { page = 1, pageSize = 4 } = req.query;
   try {
-    const professionals = await ProfessionalModel.find({}, 'myWorks')
-      .limit(parseInt(pageSize))
-      .skip((parseInt(page) - 1) * parseInt(pageSize))
+    const professionals = await ProfessionalModel.find({}, "myWorks")
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
       .sort({ pubDate: -1 });
 
-    const totalWorks = await ProfessionalModel.countDocuments();
-
     let myWorks = [];
-    professionals.forEach(professional => {
+    let totalWorkCount = 0;
+    professionals.forEach((professional) => {
       if (professional.myWorks && Array.isArray(professional.myWorks)) {
-        myWorks = myWorks.concat(professional.myWorks);
+        const remainingSpace = pageSize - myWorks.length;
+        const worksToAdd = professional.myWorks.slice(0, remainingSpace);
+        myWorks = myWorks.concat(worksToAdd);
+        totalWorkCount += professional.myWorks.length;
       }
     });
 
     res.status(200).send({
-      currentPage: parseInt(page),
-      pageSize: parseInt(pageSize),
-      totalPages: Math.ceil(totalWorks / parseInt(pageSize)),
+      currentPage: page,
+      pageSize: pageSize,
+      totalPages: Math.ceil(totalWorkCount / parseInt(pageSize)),
       statusCode: 200,
-      payload: myWorks
+      payload: myWorks,
     });
   } catch (error) {
     res.status(500).send({
       statusCode: 500,
-      message: "Internal server error"
+      message: "Internal server error",
     });
   }
 };
 
-
 exports.getSingleWork = async (req, res) => {
   const { workId } = req.params;
   try {
-    const professionals = await ProfessionalModel.find({}, 'myWorks');
+    const professionals = await ProfessionalModel.find({}, "myWorks");
     let foundWork = null;
     professionals.forEach((professional) => {
-      const work = professional.myWorks.find((work) => work._id.toString() === workId);
+      const work = professional.myWorks.find(
+        (work) => work._id.toString() === workId
+      );
       if (work) {
         foundWork = work;
         return;
@@ -83,13 +86,15 @@ exports.getSingleWork = async (req, res) => {
   }
 };
 
-
 exports.getMyWorks = async (req, res) => {
   const { id } = req.params;
-  const { page = 1, pageSize = 3 } = req.query;
+  const { page = 1, pageSize = 4 } = req.query
 
   try {
-    const professional = await ProfessionalModel.findById(id);
+    const professional = await ProfessionalModel.findById(id)
+    .limit(pageSize)
+    .skip((page - 1) * pageSize)
+    .sort({pubDate: -1})
 
     if (!professional) {
       return res.status(404).send({
@@ -127,13 +132,15 @@ exports.getMyWorks = async (req, res) => {
   }
 };
 
-
 exports.getPreferWorks = async (req, res) => {
   const { id } = req.params;
-  const { page = 1, pageSize = 3 } = req.query;
+  const { page = 1, pageSize = 4 } = req.query
 
   try {
-    const professional = await ProfessionalModel.findById(id);
+    const professional = await ProfessionalModel.findById(id)
+    .limit(pageSize)
+    .skip((page - 1) * pageSize)
+    .sort({pubDate: -1})
 
     if (!professional) {
       return res.status(404).send({
@@ -173,8 +180,8 @@ exports.getPreferWorks = async (req, res) => {
 
 exports.getSingleProfessional = async (req, res) => {
   const { id } = req.params;
-  const { page = 1, pageSize = 3 } = req.query;
-
+  const { page = 1, pageSize = 4 } = req.query
+ 
   try {
     const professional = await ProfessionalModel.findById(id)
       .limit(pageSize)

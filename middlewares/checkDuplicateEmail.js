@@ -11,11 +11,11 @@ const checkDuplicateEmail = async (req, res, next) => {
     if (existingUser || existingProfessional) {
       return res.status(400).send({
         statusCode: 400,
-        message: "An account with this email already exists."
+        message: "An account with this email already exists.",
       });
     }
 
-    next(); 
+    next();
   } catch (error) {
     console.error("Error checking duplicate email:", error);
     return res.status(500).send({ message: "Internal server error" });

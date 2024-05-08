@@ -72,19 +72,20 @@ export const PreferWorksContent = () => {
     setPage(newPage);
   };
   return (
-    <div className={`${styles.content}`}>
-      <SidebarWithSearch />
-      {isLoading && <CustomSpinner />}
-      {!isLoading && error && (
-        <ErrorAlert message="Ops! Qualcosa è andato storto" />
-      )}
-      {isAuthenticated &&
-        !isLoading &&
-        !error &&
-        works.length > 0 &&
-        works.map((work) => (
-          <div key={work._id}>
+    <div class="flex-cols my-5">
+    <div class="flex flex-wrap m-5">
+    {isLoading && <CustomSpinner />}
+    {!isLoading && error && (
+      <ErrorAlert message="Ops! Qualcosa è andato storto" />
+    )}
+    {isAuthenticated &&
+      !isLoading &&
+      !error &&
+      works &&
+      works.map((work) => (
+          <div class="m-5" >
             <PrivateCards
+            key={work._id}
               author={work.author}
               description={work.description}
               title={work.title}
@@ -97,11 +98,14 @@ export const PreferWorksContent = () => {
           </div>
         ))}
 
+</div>
+        <div class="flex justify-center">
       <DefaultPagination
         onPageChange={onPageChange}
         currentPage={page}
         totalPage={totalPages}
       />
+      </div>
     </div>
   );
 };
