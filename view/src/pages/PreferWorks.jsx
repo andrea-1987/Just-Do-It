@@ -8,7 +8,7 @@ const PreferWorks = () => {
     <MainLayout>
     <div class="flex">
      <SidebarWithSearch />
-     <PreferWorksContent />
+     <PreferWorksContent/>
      </div>
  </MainLayout>
   );

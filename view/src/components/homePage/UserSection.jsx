@@ -16,7 +16,7 @@ export function UserSection() {
   return (
     <Card
       shadow={false}
-      className="relative grid h-[40rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
+      className="transition delay-150 duration-300 ease-in-out hover:scale-110 relative grid h-[40rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
     >
       <CardHeader
         floated={false}

@@ -10,7 +10,7 @@ export function UserCards({ author, title, pubDate, img, location, _id }) {
   };
 
   return (
-    <div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+    <div class="transition delay-150 duration-300 ease-in-out hover:scale-110 relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-xl h-80">
         <img src={img} alt="profile-picture" />
       </div>
