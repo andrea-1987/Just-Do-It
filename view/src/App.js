@@ -5,6 +5,7 @@ import { DetailPage } from "./pages/DetailPage";
 import LoggedPage from "./pages/LoggedPage";
 import MyWorks from "./pages/MyWorks";
 import PreferWorks from "./pages/PreferWorks";
+import AboutUsPage from "./pages/AboutUsPage";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
+        <Route  path="/aboutUs" element={<AboutUsPage/>} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/allWorks" element={<LoggedPage />} />
                    <Route path="/user/:_id/preferWorks" element={<PreferWorks/>} />

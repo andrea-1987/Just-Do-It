@@ -1,3 +1,6 @@
 .welcome:hover{
 cursor: pointer;
-}
+};
+.navbar{
+    background-color: blue!important
+    };
