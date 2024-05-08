@@ -7,17 +7,17 @@ import {
   Button,
   Dialog,
 } from "@material-tailwind/react";
-import styles from "./section.module.css";
-import { UserRegistrationForm } from "../../signUpForm/UserSignUpForm";
+import { ProfessionalRegistrationForm } from "../signUpForm/ProfessionalSignUpForm";
 
-export function UserSection() {
+
+export function ProfessionalSection() {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(!open);
   return (
     <Card
       shadow={false}
-      className={`relative grid h-[40rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center ${styles.section}`}
+      className="relative grid h-[40rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
     >
       <CardHeader
         floated={false}
@@ -33,7 +33,7 @@ export function UserSection() {
           color="white"
           className="mb-6 font-medium leading-[1.5]"
         >
-          The Solution for every need of Yours!
+          Are You a Professional ? Show your Skill
         </Typography>
         <div>
           <Button onClick={handleOpen} variant="gradient">
@@ -44,7 +44,7 @@ export function UserSection() {
             handler={handleOpen}
             className="flex justify-center"
           >
-            <UserRegistrationForm />
+            <ProfessionalRegistrationForm/>
           </Dialog>
         </div>
       </CardBody>

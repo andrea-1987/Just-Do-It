@@ -5,7 +5,7 @@ import { Footer } from "../components/footer/Footer";
 export const MainLayout = ({ children }) => {
   return (
     <>
-      <StickyNavbar />
+      <StickyNavbar/>
       {children}
       <Footer />
     </>
