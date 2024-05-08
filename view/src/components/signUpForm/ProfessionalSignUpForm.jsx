@@ -26,14 +26,14 @@ export function ProfessionalRegistrationForm() {
         }
       );
       if (response.ok) {
-            navigate("/works")
+            navigate("/allWorks")
             alert("Professional successfully create!")
             return response.json()
       } else {
-        throw new Error("Somethinks  wrong!");
+        throw new Error("Account with this email allready exist")
       }
     } catch (e) {
-      alert("Error to create Professional", e.message);
+      alert( e.message);
     }
   };
   const onChageInput = (e) => {

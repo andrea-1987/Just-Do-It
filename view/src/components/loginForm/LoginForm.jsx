@@ -24,7 +24,7 @@ export function LoginForm() {
           localStorage.setItem("auth", data.token);
   
           const decodedToken = jwtDecode(data.token);
-  
+            alert("Login Success!!")
           navigate("/allWorks");
         } else {
           alert("Unknown User");

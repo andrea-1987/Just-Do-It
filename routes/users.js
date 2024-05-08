@@ -3,6 +3,7 @@ const router = express.Router();
 const usersController= require("../controllers/usersController");
 const validateUser = require("../middlewares/validateUserBody");
 const verified = require("../middlewares/verifyToken");
+const checkDuplicateEmail= require("../middlewares/checkDuplicateEmail");
 
 router.get("/user",verified, usersController.getUsers);
 
@@ -10,7 +11,7 @@ router.get("/user/:id", usersController.getSingleUsers);
 
 router.get("/user/:id/preferWorks", usersController.getPreferWorks);
 
-router.post("/createUser",validateUser,usersController.addUser);
+router.post("/createUser",validateUser,checkDuplicateEmail,usersController.addUser);
 
 router.post("/user/:id/preferWorks",usersController.addWorkToPreferWorks);
 

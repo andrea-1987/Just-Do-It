@@ -5,7 +5,7 @@ import AboutUs from '../components/aboutUs/AboutUs'
 const AboutUsPage = () => {
   return (
   <MainLayout>
-    <AboutUs className="text-center"/>
+    <AboutUs/>
   </MainLayout>
   )
 }

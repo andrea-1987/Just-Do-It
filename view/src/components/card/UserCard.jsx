@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -16,14 +16,11 @@ export function UserCards({
   img,
   location,
   _id,
-  workId
 }) {
   const navigate = useNavigate();
-  
 
   const handleDetailPage = () => {
     navigate(`/allWorks/${_id}`);
-   
   };
 
   return (

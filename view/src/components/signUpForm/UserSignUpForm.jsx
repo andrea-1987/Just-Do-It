@@ -26,14 +26,14 @@ export function UserRegistrationForm() {
         }
       );
       if (response.ok) {
-       navigate("/works")
+       navigate("/allWorks")
        alert("User successfully create!")
        return response.json()
-      } else {
-        throw new Error("Somethinks  wrong!");
+      } else{
+        throw new Error("Account with this email allready exist")
       }
     } catch (e) {
-      alert("Error to create user", e.message);
+      alert(e.message);
     }
   };
 

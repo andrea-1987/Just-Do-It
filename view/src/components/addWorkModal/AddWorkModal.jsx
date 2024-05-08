@@ -75,6 +75,8 @@ export const AddWorkModal = () => {
     } catch (error) {
       alert("Submit work failed: " + error.message);
     }
+    alert("Work successfully create!")
+    window.location.reload()
   };
 
   return (
