@@ -18,32 +18,57 @@ exports.getProfessional = async (req, res) => {
 
 exports.getAllProfessionalMyWorks = async (req, res) => {
   const { page = 1, pageSize = 4 } = req.query;
-  try {
-    const professionals = await ProfessionalModel.find({}, "myWorks")
-      .limit(pageSize)
-      .skip((page - 1) * pageSize)
-      .sort({ pubDate: -1 });
 
-    let myWorks = [];
+  try {
+    const allProfessionals = await ProfessionalModel.find({}, "myWorks");
     let totalWorkCount = 0;
-    professionals.forEach((professional) => {
+
+    allProfessionals.forEach((professional) => {
       if (professional.myWorks && Array.isArray(professional.myWorks)) {
-        const remainingSpace = pageSize - myWorks.length;
-        const worksToAdd = professional.myWorks.slice(0, remainingSpace);
-        myWorks = myWorks.concat(worksToAdd);
         totalWorkCount += professional.myWorks.length;
       }
     });
 
+    const totalPages = Math.ceil(totalWorkCount / pageSize);
+
+    if (page > totalPages || page <= 0) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Page ${page} does not exist`,
+      });
+    }
+
+    let myWorks = [];
+    let accumulatedWorks = 0;
+
+    for (let i = 0; i < allProfessionals.length; i++) {
+      const professional = allProfessionals[i];
+      if (professional.myWorks && Array.isArray(professional.myWorks)) {
+        for (let j = 0; j < professional.myWorks.length; j++) {
+          const work = professional.myWorks[j];
+          if (
+            accumulatedWorks >= (page - 1) * pageSize &&
+            myWorks.length < pageSize
+          ) {
+            myWorks.push(work);
+          }
+          accumulatedWorks++;
+          if (myWorks.length >= pageSize) break;
+        }
+      }
+      if (myWorks.length >= pageSize) break;
+    }
+
     res.status(200).send({
       currentPage: page,
       pageSize: pageSize,
-      totalPages: Math.ceil(totalWorkCount / parseInt(pageSize)),
+      totalPages: totalPages,
       statusCode: 200,
       payload: myWorks,
     });
   } catch (error) {
-    res.status(500).send({
+    console.error("Error fetching professional my works:", error);
+    res.status(500).json({
       statusCode: 500,
       message: "Internal server error",
     });
@@ -88,13 +113,13 @@ exports.getSingleWork = async (req, res) => {
 
 exports.getMyWorks = async (req, res) => {
   const { id } = req.params;
-  const { page = 1, pageSize = 4 } = req.query
+  const { page = 1, pageSize = 4 } = req.query;
 
   try {
     const professional = await ProfessionalModel.findById(id)
-    .limit(pageSize)
-    .skip((page - 1) * pageSize)
-    .sort({pubDate: -1})
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .sort({ pubDate: -1 });
 
     if (!professional) {
       return res.status(404).send({
@@ -134,21 +159,17 @@ exports.getMyWorks = async (req, res) => {
 
 exports.getPreferWorks = async (req, res) => {
   const { id } = req.params;
-  const { page = 1, pageSize = 4 } = req.query
+  const { page = 1, pageSize = 4 } = req.query;
 
   try {
-    const professional = await ProfessionalModel.findById(id)
-    .limit(pageSize)
-    .skip((page - 1) * pageSize)
-    .sort({pubDate: -1})
+    const professional = await ProfessionalModel.findById(id);
 
     if (!professional) {
-      return res.status(404).send({
+      return res.status(404).json({
         statusCode: 404,
         message: `Professional with id ${id} not found`,
       });
     }
-
     const preferWorks = professional.preferWorks.slice(
       (page - 1) * pageSize,
       page * pageSize
@@ -161,17 +182,17 @@ exports.getPreferWorks = async (req, res) => {
       preferWorks,
     };
 
-    res.status(200).send({
+    res.status(200).json({
       currentPage: page,
       pageSize,
       totalPages: Math.ceil(totalPreferWorks / pageSize),
       statusCode: 200,
-      message: `Preferit works with id ${id} correctly found`,
+      message: `PreferWorks for professional with id ${id} fetched successfully`,
       payload,
     });
   } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).send({
+    console.error("Error fetching professional preferWorks:", error);
+    res.status(500).json({
       statusCode: 500,
       message: "Internal server error",
     });
@@ -180,8 +201,8 @@ exports.getPreferWorks = async (req, res) => {
 
 exports.getSingleProfessional = async (req, res) => {
   const { id } = req.params;
-  const { page = 1, pageSize = 4 } = req.query
- 
+  const { page = 1, pageSize = 4 } = req.query;
+
   try {
     const professional = await ProfessionalModel.findById(id)
       .limit(pageSize)
