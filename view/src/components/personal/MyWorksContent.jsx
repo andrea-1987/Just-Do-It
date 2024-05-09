@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styles from "./personalContent.module.css";
 import { CustomSpinner } from "../loading/Loader";
 import { ErrorAlert } from "../error/Error";
 import { DefaultPagination } from "../pagination/Pagination";
@@ -8,7 +7,6 @@ import { worksError, isWorkLoading } from "../../redux/WorkCardSlice";
 import { useSelector } from "react-redux";
 import sessionData from "../../helper/session";
 import { PrivateCards } from "../card/PrivateCard";
-import { SidebarWithSearch } from "../sidebar/SideBar";
 
 export const MyWorksContent = () => {
   const isAuthenticated = useSession();
