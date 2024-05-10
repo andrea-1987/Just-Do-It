@@ -26,11 +26,13 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { AddWorkModal } from "../addWorkModal/AddWorkModal";
 import sessionData from "../../helper/session";
+import SettingForm from "../settingform/SettingForm";
 
 export function SidebarWithSearch() {
   const [open, setOpen] = React.useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
   const [jobFilter, setJobFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [filtered, setFiltered] = useState({ job: "", location: "" });
@@ -55,7 +57,7 @@ export function SidebarWithSearch() {
       location: value,
     }));
   };
-
+const handleOpenSettings=()=>setOpenSettings(!openSettings)
   const handleOpenModal = () => setOpenModal(!openModal);
   const shouldShowAddWorkButton = location.pathname.startsWith("/professional");
   const shouldShowMyWorks = sessionData.role === "professional";
@@ -155,12 +157,21 @@ export function SidebarWithSearch() {
               </div>
             )}
           </div>
-          <ListItem className="my-2">
+          <ListItem 
+          onClick={handleOpenSettings}
+          className="my-2">
             <ListItemPrefix>
               <Cog6ToothIcon className="h-5 w-5" />
             </ListItemPrefix>
             Settings
           </ListItem>
+          <Dialog
+                open={openSettings}
+                handler={handleOpenSettings}
+                className="flex justify-center"
+              >
+                <SettingForm />
+              </Dialog>
           <ListItem className="my-2" onClick={handlePreferWorks}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />

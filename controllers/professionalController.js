@@ -145,7 +145,7 @@ exports.getMyWorks = async (req, res) => {
       payload,
     });
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching professional:", error);
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error",
@@ -225,12 +225,12 @@ exports.getSingleProfessional = async (req, res) => {
       pageSize,
       totalPages: Math.ceil(totalMyWorks / pageSize),
       statusCode: 200,
-      message: `User with id ${id} correctly found`,
+      message: `professional with id ${id} correctly found`,
       payload: professional,
       myWorks,
     });
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching professional:", error);
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error",
@@ -353,11 +353,11 @@ exports.toggleToPreferWorks = async (req, res) => {
 
     res.status(200).send({
       statusCode: 200,
-      message: `Work added to my saved of user with ID ${id}`,
+      message: `Work added to my saved of professional with ID ${id}`,
       work: addedWork,
     });
   } catch (error) {
-    console.error("Error adding professional work to user's preferWorks:", error);
+    console.error("Error adding professional work to professional's preferWorks:", error);
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error",
@@ -367,24 +367,30 @@ exports.toggleToPreferWorks = async (req, res) => {
 
 exports.updateProfessional = async (req, res) => {
   const { id } = req.params;
-  const user = await ProfessionalModel.findById(id);
-  if (!user) {
+  const professional = await ProfessionalModel.findById(id);
+
+  if (!professional) {
     return res.status(404).send({
       statusCode: 404,
-      message: "The requested professional not exist!",
+      message: "professional not found",
     });
   }
+
   try {
-    const updatedData = req.body;
-    const options = { new: true };
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      req.body.password = hashedPassword;
+    }
 
-    const result = await ProfessionalModel.findByIdAndUpdate(
-      id,
-      updatedData,
-      options
-    );
+    const updatedprofessional = await ProfessionalModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
 
-    res.status(200).send(result);
+    res.status(200).send({
+      statusCode: 200,
+      message: "professional updated successfully",
+      updatedprofessional,
+    });
   } catch (error) {
     res.status(500).send({
       statusCode: 500,
@@ -397,8 +403,8 @@ exports.deleteProfessional = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await ProfessionalModel.findByIdAndDelete(id);
-    if (!user) {
+    const professional = await ProfessionalModel.findByIdAndDelete(id);
+    if (!professional) {
       return res.status(404).send({
         statusCode: 404,
         message: `The professional with id ${id} not exist`,

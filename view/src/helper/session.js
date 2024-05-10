@@ -13,6 +13,7 @@ if (session) {
     email: decodedSession.email,
     role: decodedSession.role,
     _id: decodedSession._id,
+    token:decodedSession.token,
     preferWorks: decodedSession.preferWorks ? decodedSession.preferWorks : undefined,
     myWorks: decodedSession.myWorks ? decodedSession.myWorks : undefined,
   };

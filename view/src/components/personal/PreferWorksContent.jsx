@@ -32,8 +32,7 @@ export const PreferWorksContent = () => {
       const data = await response.json();
       setWorks(data.payload.preferWorks);
       setTotalPages(data.totalPages);
-      console.log(works, totalPages);
-    } catch (error) {
+       } catch (error) {
       console.error("Error fetching works:", error);
     }
   };
