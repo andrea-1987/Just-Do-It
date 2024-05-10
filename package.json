@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "node": "14.x"
-  },
+
   "scripts": {
-    "dev": "node main.js",
+    "dev": "nodemon main.js",
     "production": "pm2-runtime start main.js -i --exp-backoff-restart-delay-100"
   },
   "keywords": [],
