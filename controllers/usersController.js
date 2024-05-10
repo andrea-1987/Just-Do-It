@@ -124,52 +124,6 @@ exports.addUser=async(req,res)=>{
     }
 };
 
-exports.addWorkToPreferWorks = async (req, res) => {
-    const { id } = req.params;
-    const { author, title, description, img, location } = req.body;
-  
-    if (!author || !title || !description || !img) {
-      return res.status(400).send({
-        statusCode: 400,
-        message: "Missing required fields: author, title, description, img",
-      });
-    }
-  
-    try {
-      const user = await UserModel.findById(id);
-      if (!user) {
-        return res.status(404).send({
-          statusCode: 404,
-          message: `user with ID ${id} not found`,
-        });
-      }
-  
-      user.preferWorks.push({
-        author,
-        title,
-        description,
-        img,
-        location,
-      });
-  
-      await user.save();
-  
-      const addedWork = user.preferWorks[user.preferWorks.length - 1];
-  
-      res.status(200).send({
-        statusCode: 200,
-        message: `Work added to myWorks of user with ID ${id}`,
-        work: addedWork,
-      });
-    } catch (error) {
-      console.error("Error adding work to myWorks:", error);
-      res.status(500).send({
-        statusCode: 500,
-        message: "Internal server error",
-      });
-    }
-  };
-
 exports.updateUser=async(req,res)=>{
     const {id}= req.params
     const user = await UserModel.findById(id);
@@ -258,7 +212,8 @@ exports.deleteWorkFromPreferWorks = async (req, res) => {
 };
 
 exports.toggleToPreferWorks = async (req, res) => {
-  const { id, workId } = req.params;
+  const { id } = req.params;
+  const { author, title, description, img, location } = req.body;
 
   try {
     const user = await UserModel.findById(id);
@@ -269,32 +224,37 @@ exports.toggleToPreferWorks = async (req, res) => {
       });
     }
 
-    const professionals = await ProfessionalModel.find({}, "myWorks");
-    let foundWork = null;
+    const existingWork = user.preferWorks.find(
+      (work) =>
+        work.author === author &&
+        work.title === title &&
+        work.description === description &&
+        work.img === img &&
+        work.location === location
+    );
 
-    for (const professional of professionals) {
-      foundWork = professional.myWorks.find(
-        (work) => work._id.toString() === workId
-      );
-      if (foundWork) {
-        break;
-      }
-    }
-
-    if (!foundWork) {
-      return res.status(404).send({
-        statusCode: 404,
-        message: `Work with id ${workId} not found`,
+    if (existingWork) {
+      return res.status(400).send({
+        statusCode: 400,
+        message: "Work allready saved!",
       });
     }
+    user.preferWorks.push({
+      author,
+      title,
+      description,
+      img,
+      location,
+    });
 
-    user.preferWorks.push(foundWork);
     await user.save();
+
+    const addedWork = user.preferWorks[user.preferWorks.length - 1];
 
     res.status(200).send({
       statusCode: 200,
-      message: `Professional work with ID ${workId} successfully added to user's preferWorks`,
-      preferWorks: user.preferWorks,
+      message: `Work added to myWorks of user with ID ${id}`,
+      work: addedWork,
     });
   } catch (error) {
     console.error("Error adding professional work to user's preferWorks:", error);
@@ -304,3 +264,4 @@ exports.toggleToPreferWorks = async (req, res) => {
     });
   }
 };
+

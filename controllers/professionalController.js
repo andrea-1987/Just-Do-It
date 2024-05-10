@@ -311,16 +311,9 @@ exports.addWorkToMyWorks = async (req, res) => {
   }
 };
 
-exports.addWorkToPreferWorks = async (req, res) => {
+exports.toggleToPreferWorks = async (req, res) => {
   const { id } = req.params;
   const { author, title, description, img, location } = req.body;
-
-  if (!author || !title || !description || !img) {
-    return res.status(400).send({
-      statusCode: 400,
-      message: "Missing required fields: author, title, description, img",
-    });
-  }
 
   try {
     const professional = await ProfessionalModel.findById(id);
@@ -331,6 +324,21 @@ exports.addWorkToPreferWorks = async (req, res) => {
       });
     }
 
+    const existingWork = professional.preferWorks.find(
+      (work) =>
+        work.author === author &&
+        work.title === title &&
+        work.description === description &&
+        work.img === img &&
+        work.location === location
+    );
+
+    if (existingWork) {
+      return res.status(400).send({
+        statusCode: 400,
+        message: "Work allready saved!",
+      });
+    }
     professional.preferWorks.push({
       author,
       title,
@@ -341,16 +349,15 @@ exports.addWorkToPreferWorks = async (req, res) => {
 
     await professional.save();
 
-    const addedWork =
-      professional.preferWorks[professional.preferWorks.length - 1];
+    const addedWork = professional.preferWorks[professional.preferWorks.length - 1];
 
     res.status(200).send({
       statusCode: 200,
-      message: `Work added to myWorks of professional with ID ${id}`,
+      message: `Work added to my saved of user with ID ${id}`,
       work: addedWork,
     });
   } catch (error) {
-    console.error("Error adding work to myWorks:", error);
+    console.error("Error adding professional work to user's preferWorks:", error);
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error",

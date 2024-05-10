@@ -10,6 +10,7 @@ import sessionData from "../../helper/session";
 
 export const DetailContent = () => {
   const [work, setWork] = useState(null);
+  const [preferWorks,setPreferWorks]=useState([])
   const dispatch = useDispatch();
   const isLoading = useSelector(isWorkLoading);
   const error = useSelector(worksError);
@@ -18,7 +19,7 @@ export const DetailContent = () => {
   const getDetailWork = async () => {
     try {
       if (!workId) {
-        throw new Error("ID del lavoro non fornito");
+        throw new Error("ID of work not found");
       }
 
       const response = await fetch(
@@ -27,78 +28,46 @@ export const DetailContent = () => {
       const data = await response.json();
       if (data && data.payload) {
         setWork(data.payload);
-        console.log(work);
       } else {
-        throw new Error("Lavoro non trovato");
+        throw new Error("Work not found");
       }
     } catch (error) {
-      console.error("Errore nel trovare il lavoro", error);
+      alert("error to find work", error);
     }
   };
   useEffect(() => {
     getDetailWork();
   }, [professionalId, workId]);
 
-  // const addToPreferWorks = async () => {
-  //   try {
-  //     if (!work) {
-  //       throw new Error("Lavoro non trovato");
-  //     }
-
-  //     const response = await fetch(
-  //       `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
-  //       {
-  //         method: "PATCH",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${sessionData}`,
-  //         },
-  //         body: JSON.stringify(work),
-  //       }
-  //     );
-  //     console.log(workId)
-
-  //     if (response.ok) {
-  //       alert("Work successfully saved");
-  //     } else {
-  //       console.error("Error to save:", response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error to save:", error);
-  //   }
-  // };
-
-  const addToPreferWorks = async () => {
-    try {
-      if (!workId) {
-        throw new Error("workId non fornito");
+ const addToPreferWorks = async () => {
+   console.log(sessionData.role,sessionData._id)
+   if (!work || !sessionData.role || !sessionData._id) {
+     throw new Error("Work or session undefined");
+   }else{
+  try {
+       const response = await fetch(
+      `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: sessionData,
+        },
+        body: JSON.stringify(work), 
       }
-      
-    if(sessionData.role && sessionData._id){
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionData}`,
-          },
-          body: JSON.stringify( work),
-        }
-      );
-  
-      if (response.ok) {
-        alert("Lavoro salvato con successo");
-      } else {
-        console.error("Errore nel salvataggio:", response.statusText);
-      }
+    );
+
+    if (response.ok) {
+      alert("Work successfully saved!");
+    } else {
+      const errorData = await response.json(); 
+        throw new Error("Error to save work: " + errorData.message);
     }
-    } catch (error) {
-      console.error("Errore nel salvataggio:", error);
-    }
-  
-  };
-  
+  } catch (error) {
+    alert(error.message);
+  }}
+};
+
 
   return (
     <div class="flex-cols my-5">
