@@ -13,9 +13,11 @@ router.get("/user/:id/preferWorks", usersController.getPreferWorks);
 
 router.post("/createUser",validateUser,checkDuplicateEmail,usersController.addUser);
 
-router.post("/user/:id/preferWorks",usersController.addWorkToPreferWorks);
+// router.post("/user/:id/preferWorks",usersController.addWorkToPreferWorks);
 
 router.patch("/user/update/:id",usersController.updateUser);
+
+router.patch("/user/:id/preferWorks", usersController.toggleToPreferWorks);
 
 router.delete("/user/delete/:id",usersController.deleteUser);
 

@@ -255,3 +255,44 @@ exports.deleteWorkFromPreferWorks = async (req, res) => {
     });
   }
 };
+
+exports.toggleToPreferWorks = async (req, res) => {
+  const { id } = req.params;
+  const user = await UserModel.findById(id);
+  
+  if (!user) {
+      return res.status(404).send({
+          statusCode: 404,
+          message: 'The requested user does not exist!'
+      });
+  }
+
+  try {
+      // Aggiungi il lavoro selezionato ai preferWorks dell'utente
+      if (req.body.workId) {
+          // Controlla se il lavoro è già presente nei preferiti dell'utente
+          const index = user.preferWorks.indexOf(req.body.workId);
+          if (index === -1) {
+              // Se il lavoro non è presente, aggiungilo
+              user.preferWorks.push(req.body.workId);
+          } else {
+              // Se il lavoro è già presente, rimuovilo
+              user.preferWorks.splice(index, 1);
+          }
+      }
+
+      // Aggiorna gli altri campi dell'utente
+      const updatedData = { ...req.body };
+      const options = { new: true };
+      const result = await UserModel.findByIdAndUpdate(id, updatedData, options);
+
+      res.status(200).send(result);
+  } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).send({
+          statusCode: 500,
+          message: 'Internal server error'
+      });
+  }
+};
+

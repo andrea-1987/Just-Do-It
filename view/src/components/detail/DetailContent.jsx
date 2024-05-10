@@ -5,7 +5,6 @@ import { isWorkLoading, worksError } from "../../redux/WorkCardSlice";
 import { CustomSpinner } from "../loading/Loader";
 import { ErrorAlert } from "../error/Error";
 import { DetailCard } from "../card/DetailCard";
-import { SidebarWithSearch } from "../sidebar/SideBar";
 import styles from "./detailContent.module.css";
 import sessionData from "../../helper/session";
 
@@ -40,33 +39,63 @@ export const DetailContent = () => {
     getDetailWork();
   }, [professionalId, workId]);
 
+  // const addToPreferWorks = async () => {
+  //   try {
+  //     if (!work) {
+  //       throw new Error("Lavoro non trovato");
+  //     }
+
+  //     const response = await fetch(
+  //       `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
+  //       {
+  //         method: "PATCH",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${sessionData}`,
+  //         },
+  //         body: JSON.stringify(work),
+  //       }
+  //     );
+  //     console.log(workId)
+
+  //     if (response.ok) {
+  //       alert("Work successfully saved");
+  //     } else {
+  //       console.error("Error to save:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error to save:", error);
+  //   }
+  // };
+
   const addToPreferWorks = async () => {
     try {
-      if (!work) {
-        throw new Error("Lavoro non trovato");
+      if (!workId) {
+        throw new Error("workId non fornito");
       }
-
+  
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionData}`,
           },
-          body: JSON.stringify(work),
+          body: JSON.stringify({ workId }), // Passa solo il workId nel corpo della richiesta
         }
       );
-
+  
       if (response.ok) {
-        alert("Work successfully saved");
+        alert("Lavoro salvato con successo");
       } else {
-        console.error("Error to save:", response.statusText);
+        console.error("Errore nel salvataggio:", response.statusText);
       }
     } catch (error) {
-      console.error("Error to save:", error);
+      console.error("Errore nel salvataggio:", error);
     }
   };
+  
 
   return (
     <div class="flex-cols my-5">
