@@ -32,7 +32,7 @@ export const PreferWorksContent = () => {
       const data = await response.json();
       setWorks(data.payload.preferWorks);
       setTotalPages(data.totalPages);
-      console.log(works,totalPages)
+      console.log(works, totalPages);
     } catch (error) {
       console.error("Error fetching works:", error);
     }
@@ -71,38 +71,37 @@ export const PreferWorksContent = () => {
   };
   return (
     <div class="flex-cols my-5">
-    <div class="flex flex-wrap m-5">
-    {isLoading && <CustomSpinner />}
-    {!isLoading && error && (
-      <ErrorAlert message="Ops! Qualcosa è andato storto" />
-    )}
-    {isAuthenticated &&
-      !isLoading &&
-      !error &&
-      works &&
-      works.map((work) => (
-          <div class="m-5" >
-            <PrivateCards
-            key={work._id}
-              author={work.author}
-              description={work.description}
-              title={work.title}
-              img={work.img}
-              location={work.location}
-              pubDate={work.pubDate}
-              _id={work._id}
-              handleRemove={() => handleRemove(work._id)}
-            />
-          </div>
-        ))}
-
-</div>
-        <div class="flex justify-center">
-      <DefaultPagination
-        onPageChange={onPageChange}
-        currentPage={page}
-        totalPage={totalPages}
-      />
+      <div class="flex flex-wrap m-5">
+        {isLoading && <CustomSpinner />}
+        {!isLoading && error && (
+          <ErrorAlert message="Ops! Qualcosa è andato storto" />
+        )}
+        {isAuthenticated &&
+          !isLoading &&
+          !error &&
+          works &&
+          works.map((work) => (
+            <div class="m-5">
+              <PrivateCards
+                key={work._id}
+                author={work.author}
+                description={work.description}
+                title={work.title}
+                img={work.img}
+                location={work.location}
+                pubDate={work.pubDate}
+                _id={work._id}
+                handleRemove={() => handleRemove(work._id)}
+              />
+            </div>
+          ))}
+      </div>
+      <div class="flex justify-center">
+        <DefaultPagination
+          onPageChange={onPageChange}
+          currentPage={page}
+          totalPage={totalPages}
+        />
       </div>
     </div>
   );

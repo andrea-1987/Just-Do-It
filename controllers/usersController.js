@@ -1,5 +1,4 @@
 const UserModel= require("../models/users");
-const ProfessionalModel=require("../models/professionals");
 const bcrypt = require("bcrypt");
 
 exports.getUsers= async(req,res)=>{
