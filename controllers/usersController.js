@@ -1,4 +1,5 @@
 const UserModel= require("../models/users");
+const ProfessionalModel=require("../models/professionals");
 const bcrypt = require("bcrypt");
 
 exports.getUsers= async(req,res)=>{
@@ -257,42 +258,49 @@ exports.deleteWorkFromPreferWorks = async (req, res) => {
 };
 
 exports.toggleToPreferWorks = async (req, res) => {
-  const { id } = req.params;
-  const user = await UserModel.findById(id);
-  
-  if (!user) {
-      return res.status(404).send({
-          statusCode: 404,
-          message: 'The requested user does not exist!'
-      });
-  }
+  const { id, workId } = req.params;
 
   try {
-      // Aggiungi il lavoro selezionato ai preferWorks dell'utente
-      if (req.body.workId) {
-          // Controlla se il lavoro è già presente nei preferiti dell'utente
-          const index = user.preferWorks.indexOf(req.body.workId);
-          if (index === -1) {
-              // Se il lavoro non è presente, aggiungilo
-              user.preferWorks.push(req.body.workId);
-          } else {
-              // Se il lavoro è già presente, rimuovilo
-              user.preferWorks.splice(index, 1);
-          }
-      }
-
-      // Aggiorna gli altri campi dell'utente
-      const updatedData = { ...req.body };
-      const options = { new: true };
-      const result = await UserModel.findByIdAndUpdate(id, updatedData, options);
-
-      res.status(200).send(result);
-  } catch (error) {
-      console.error("Error updating user:", error);
-      res.status(500).send({
-          statusCode: 500,
-          message: 'Internal server error'
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `User with ID ${id} not found`,
       });
+    }
+
+    const professionals = await ProfessionalModel.find({}, "myWorks");
+    let foundWork = null;
+
+    for (const professional of professionals) {
+      foundWork = professional.myWorks.find(
+        (work) => work._id.toString() === workId
+      );
+      if (foundWork) {
+        break;
+      }
+    }
+
+    if (!foundWork) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Work with id ${workId} not found`,
+      });
+    }
+
+    user.preferWorks.push(foundWork);
+    await user.save();
+
+    res.status(200).send({
+      statusCode: 200,
+      message: `Professional work with ID ${workId} successfully added to user's preferWorks`,
+      preferWorks: user.preferWorks,
+    });
+  } catch (error) {
+    console.error("Error adding professional work to user's preferWorks:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error",
+    });
   }
 };
-

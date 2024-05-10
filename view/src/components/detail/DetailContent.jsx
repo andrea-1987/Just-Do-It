@@ -73,7 +73,8 @@ export const DetailContent = () => {
       if (!workId) {
         throw new Error("workId non fornito");
       }
-  
+      
+    if(sessionData.role && sessionData._id){
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
         {
@@ -82,7 +83,7 @@ export const DetailContent = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${sessionData}`,
           },
-          body: JSON.stringify({ workId }), // Passa solo il workId nel corpo della richiesta
+          body: JSON.stringify( work),
         }
       );
   
@@ -91,9 +92,11 @@ export const DetailContent = () => {
       } else {
         console.error("Errore nel salvataggio:", response.statusText);
       }
+    }
     } catch (error) {
       console.error("Errore nel salvataggio:", error);
     }
+  
   };
   
 
