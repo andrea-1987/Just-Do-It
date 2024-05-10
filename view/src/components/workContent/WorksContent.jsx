@@ -34,7 +34,7 @@ export const WorksContent = () => {
       const data = await response.json();
       setWorks(data.payload);
       setTotalPages(data.totalPages);
-      } catch (error) {
+    } catch (error) {
       console.error("Error fetching works:", error);
     }
   };
@@ -61,18 +61,18 @@ export const WorksContent = () => {
           works &&
           works.map((work) => (
             <div class=" m-5">
-            <UserCards
-              key={work._id}
-              author={work.author}
-              description={work.description}
-              title={work.title}
-              img={work.img}
-              location={work.location}
-              pubDate={work.pubDate}
-              _id={work._id}
-              professionalId={professionalId}
-              workId={workId}
-            />
+              <UserCards
+                key={work._id}
+                author={work.author}
+                description={work.description}
+                title={work.title}
+                img={work.img}
+                location={work.location}
+                pubDate={work.pubDate}
+                _id={work._id}
+                professionalId={professionalId}
+                workId={workId}
+              />
             </div>
           ))}
       </div>
