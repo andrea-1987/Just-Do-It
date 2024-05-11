@@ -1,14 +1,13 @@
 {
-    "functions": {
-      "/*.js": {
-        "runtime": "nodejs12.x"
-      }
-    },
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/$1"
-      }
-    ]
+  "version": 2,
+  "builds": [{
+  "src": "./main.js",
+  "use": "@now/node-main"
+  }],
+  "routes": [{"handle": "filesystem"},
+  {
+  "src": "/.*",
+  "dest": "main.js"
   }
-  
+  ]
+  }
