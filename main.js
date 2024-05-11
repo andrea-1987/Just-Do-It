@@ -12,6 +12,12 @@ const worksRoutes = require("./routes/works");
 const PORT = process.env.PORT || 4040;
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.use(cors());
 app.use(express.json());
 
