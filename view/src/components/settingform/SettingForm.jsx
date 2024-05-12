@@ -20,7 +20,7 @@ const SettingForm = () => {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem('auth')}`, // Include il token JWT nell'header Authorization
+                            "Authorization": `Bearer ${localStorage.getItem('auth')}`, 
                         },
                         body: JSON.stringify(formData),
                     }

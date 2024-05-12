@@ -153,7 +153,6 @@ exports.getMyWorks = async (req, res) => {
   }
 };
 
-
 exports.getPreferWorks = async (req, res) => {
   const { id } = req.params;
   const { page = 1, pageSize = 4 } = req.query;
@@ -349,7 +348,8 @@ exports.toggleToPreferWorks = async (req, res) => {
 
     await professional.save();
 
-    const addedWork = professional.preferWorks[professional.preferWorks.length - 1];
+    const addedWork =
+      professional.preferWorks[professional.preferWorks.length - 1];
 
     res.status(200).send({
       statusCode: 200,
@@ -357,7 +357,10 @@ exports.toggleToPreferWorks = async (req, res) => {
       work: addedWork,
     });
   } catch (error) {
-    console.error("Error adding professional work to professional's preferWorks:", error);
+    console.error(
+      "Error adding professional work to professional's preferWorks:",
+      error
+    );
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error",
@@ -382,9 +385,13 @@ exports.updateProfessional = async (req, res) => {
       req.body.password = hashedPassword;
     }
 
-    const updatedprofessional = await ProfessionalModel.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const updatedprofessional = await ProfessionalModel.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+      }
+    );
 
     res.status(200).send({
       statusCode: 200,
@@ -490,6 +497,37 @@ exports.deleteWorkFromMyWorks = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting work from preferWorks:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.updateMyWork = async (req, res) => {
+  const { id, workId } = req.params;
+
+  try {
+    const updatedWork = await ProfessionalModel.findOneAndUpdate(
+      { _id: id, "myWorks._id": workId },
+      { $set: req.body },
+      { new: true }
+    );
+
+    if (!updatedWork) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Work with ID ${workId} not found in myWorks of professional with ID ${id}`,
+      });
+    }
+
+    res.status(200).send({
+      statusCode: 200,
+      message: `Work with ID ${workId} updated successfully for professional with ID ${id}`,
+      updatedProfessional: updatedWork,
+    });
+  } catch (error) {
+    console.error("Error updating work for professional:", error);
     res.status(500).send({
       statusCode: 500,
       message: "Internal server error",

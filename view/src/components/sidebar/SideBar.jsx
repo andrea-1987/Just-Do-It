@@ -24,7 +24,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AddWorkModal } from "../addWorkModal/AddWorkModal";
+import { AddWorkModal } from "../workModal/AddWorkModal";
 import sessionData from "../../helper/session";
 import SettingForm from "../settingform/SettingForm";
 
@@ -120,10 +120,10 @@ const handleOpenSettings=()=>setOpenSettings(!openSettings)
           className="h-[calc(100vh-2rem)] w-full p-4"
         >
           <div className="mb-2 flex items-center gap-4 p-4">
-            <img
-              src="https://docs.material-tailwind.com/img/logo-ct-dark.png"
-              alt="brand"
-              className="h-8 w-8"
+          <img
+              src="https://www.pngmart.com/files/5/Work-PNG-Transparent.png"
+              alt="logo"
+              class="w-20"
             />
             <Typography variant="h5" color="blue-gray">
               Just Do It

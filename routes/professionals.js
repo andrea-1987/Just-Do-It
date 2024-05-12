@@ -21,6 +21,8 @@ router.post("/createProfessional",validateProfessional,checkDuplicateEmail,profe
 
 router.post("/professional/:id/myWorks",professionalController.addWorkToMyWorks);
 
+router.patch("/professional/:id/update/myWorks/:workId",professionalController.updateMyWork);
+
 router.patch("/professional/:id/preferWorks",professionalController.toggleToPreferWorks);
 
 router.patch("/professional/update/:id",professionalController.updateProfessional);

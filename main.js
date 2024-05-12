@@ -9,7 +9,7 @@ const professionalRoutes = require("./routes/professionals");
 const loginRoutes = require("./routes/login");
 const worksRoutes = require("./routes/works");
 
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 4040;
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'build')));
