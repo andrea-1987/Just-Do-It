@@ -22,7 +22,7 @@ export function UserSection() {
         floated={false}
         shadow={false}
         color="transparent"
-        className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
+        className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://t3.ftcdn.net/jpg/06/16/99/18/360_F_616991897_VomjKDs37F6YMcsVzVRDebitDvtSRX2T.jpg')] bg-cover bg-center"
       >
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
       </CardHeader>
@@ -32,7 +32,7 @@ export function UserSection() {
           color="white"
           className="mb-6 font-medium leading-[1.5]"
         >
-          The Solution for every need of Yours!
+         Looking for someone for your needs?
         </Typography>
         <div>
           <Button onClick={handleOpen} variant="gradient">
