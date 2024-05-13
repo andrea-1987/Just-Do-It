@@ -5,6 +5,7 @@ import sessionData from "../../helper/session";
 const ModifyWorkModal = ({ workId }) => {
   const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({});
+  const [workData, setWorkData] = useState(null);
 
   const onChangeHandleFile = (e) => {
     setFile(e.target.files[0]);
@@ -42,22 +43,24 @@ const ModifyWorkModal = ({ workId }) => {
 
   const modifyWork = async (e) => {
     e.preventDefault();
-  
+
     if (!sessionData._id) {
+      alert("Session data missing");
       return;
     }
-  
+
     try {
       let uploadedFile = {};
       if (file) {
         uploadedFile = await uploadFile();
       }
-  
+
       const bodyToSendProfessional = {
+        ...workData,
         ...formData,
-        ...(uploadedFile.source && { img: uploadedFile.source }), // Aggiungi il campo img solo se un nuovo file è stato caricato
+        ...(uploadedFile.source && { img: uploadedFile.source }),
       };
-  
+
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_BASE_URL}/professional/${sessionData._id}/update/myWorks/${workId}`,
         {
@@ -68,24 +71,33 @@ const ModifyWorkModal = ({ workId }) => {
           body: JSON.stringify(bodyToSendProfessional),
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to modify work");
       }
-  
+
+      const updatedWorkData = {
+        ...workData,
+        ...formData,
+        ...(uploadedFile.source && { img: uploadedFile.source }),
+      };
+      setWorkData(updatedWorkData);
+
       alert("Work modified successfully!");
+
+      window.location.reload();
     } catch (error) {
       alert("Modify work failed: " + error.message);
     }
   };
-  
+
   return (
-    <Card color="transparent" shadow={false}>
+     <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
         Modify Your Work
       </Typography>
       <Typography color="gray" className="mt-1 font-normal">
-        Nice to meet you! Enter your details to add a work.
+        Nice to meet you! Enter details you want modify.
       </Typography>
       <form
         encType="multipart/form-data"

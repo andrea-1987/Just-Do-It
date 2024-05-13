@@ -508,23 +508,37 @@ exports.updateMyWork = async (req, res) => {
   const { id, workId } = req.params;
 
   try {
-    const updatedWork = await ProfessionalModel.findOneAndUpdate(
-      { _id: id, "myWorks._id": workId },
-      { $set: req.body },
-      { new: true }
-    );
+    const professional = await ProfessionalModel.findById(id);
 
-    if (!updatedWork) {
+    if (!professional) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: `Professional with ID ${id} not found`,
+      });
+    }
+
+    const existingWorkIndex = professional.myWorks.findIndex(work => work._id.toString() === workId);
+
+    if (existingWorkIndex === -1) {
       return res.status(404).send({
         statusCode: 404,
         message: `Work with ID ${workId} not found in myWorks of professional with ID ${id}`,
       });
     }
 
+    const existingWork = professional.myWorks[existingWorkIndex];
+
+    const updatedWorkData = {
+      ...existingWork.toObject(), 
+      ...req.body, 
+    };
+    professional.myWorks[existingWorkIndex] = updatedWorkData;
+    const updatedProfessional = await professional.save();
+
     res.status(200).send({
       statusCode: 200,
       message: `Work with ID ${workId} updated successfully for professional with ID ${id}`,
-      updatedProfessional: updatedWork,
+      updatedProfessional: updatedProfessional,
     });
   } catch (error) {
     console.error("Error updating work for professional:", error);
@@ -534,3 +548,4 @@ exports.updateMyWork = async (req, res) => {
     });
   }
 };
+
