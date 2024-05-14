@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-
   "scripts": {
     "dev": "nodemon main.js",
     "production": "pm2-runtime start main.js -i --exp-backoff-restart-delay-100"
