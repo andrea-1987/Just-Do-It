@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { isWorkLoading, worksError } from "../../redux/WorkCardSlice";
 import { CustomSpinner } from "../loading/Loader";
 import { ErrorAlert } from "../error/Error";
 import { DetailCard } from "../card/DetailCard";
@@ -9,39 +7,41 @@ import sessionData from "../../helper/session";
 
 export const DetailContent = () => {
   const [work, setWork] = useState(null);
-  const dispatch = useDispatch();
-  const isLoading = useSelector(isWorkLoading);
-  const error = useSelector(worksError);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { professionalId, workId } = useParams();
 
-  const getDetailWork = async () => {
-    try {
-      if (!workId) {
-        throw new Error("ID of work not found");
-      }
-
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/allWorks/${workId}`
-      );
-      const data = await response.json();
-      if (data && data.payload) {
-        setWork(data.payload);
-      } else {
-        throw new Error("Work not found");
-      }
-    } catch (error) {
-      alert("error to find work", error);
-    }
-  };
   useEffect(() => {
-    getDetailWork();
-  }, [professionalId, workId]);
+    const getDetailWork = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_BASE_URL}/allWorks/${workId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch work");
+        }
+        const data = await response.json();
+        if (data && data.payload) {
+          setWork(data.payload);
+          setIsLoading(false);
+        } else {
+          throw new Error("Work not found");
+        }
+      } catch (error) {
+        console.error("Error fetching work:", error);
+        setError(error.message);
+        setIsLoading(false);
+      }
+    };
+
+    if (workId && sessionData) {
+      getDetailWork();
+    }
+  }, [workId]);
 
   const addToPreferWorks = async () => {
-    console.log(sessionData.role, sessionData._id);
-    if (!work || !sessionData.role || !sessionData._id) {
-      throw new Error("Work or session undefined");
-    } else {
+    if (sessionData) {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_SERVER_BASE_URL}/${sessionData.role}/${sessionData._id}/preferWorks`,
@@ -49,32 +49,30 @@ export const DetailContent = () => {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
-              Authorization: sessionData,
+              Authorization: sessionData, 
             },
             body: JSON.stringify(work),
           }
         );
-
-        if (response.ok) {
-          alert("Work successfully saved!");
-        } else {
-          const errorData = await response.json();
-          throw new Error("Error to save work: " + errorData.message);
+        if (!response.ok) {
+          throw new Error("Failed to save work");
         }
+        alert("Work successfully saved!");
       } catch (error) {
-        alert(error.message);
+        console.error("Error saving work:", error);
+        alert("Work allready saved");
       }
     }
   };
 
   return (
-    <div class="flex-cols my-5">
+    <div className="flex-cols my-5">
       {isLoading && <CustomSpinner />}
       {!isLoading && error && (
         <ErrorAlert message="Ops! Qualcosa è andato storto" />
       )}
       {!isLoading && !error && work && (
-        <div class="justify-center">
+        <div className="justify-center">
           <DetailCard
             author={work.author}
             description={work.description}
@@ -90,3 +88,5 @@ export const DetailContent = () => {
     </div>
   );
 };
+
+
